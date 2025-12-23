@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dairat Al Diyaafah - Letterhead Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a5f7a 0%, #2a7a9a 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .controls {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .letterhead-preview {
+            flex: 2;
+            min-width: 300px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            color: #1a5f7a;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #2a7a9a;
+            box-shadow: 0 0 0 2px rgba(42, 122, 154, 0.2);
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .preview-container {
+            flex-grow: 1;
+            background-color: #f9f9f9;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            overflow: auto;
+            position: relative;
+        }
+        
+        .letterhead {
+            width: 21cm;
+            height: 29.7cm;
+            background-color: white;
+            margin: 0 auto;
+            padding: 2.5cm 2cm;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+        }
+        
+        .letterhead::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://6949d89d30e1aa8ca4b7ef56.imgix.net/825893fb-c206-4009-b425-4b77cdb40004.jpeg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 60%;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .letterhead-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .letterhead-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #1a5f7a;
+            padding-bottom: 20px;
+        }
+        
+        .company-name-arabic {
+            font-size: 2.8rem;
+            color: #1a5f7a;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        .company-name-english {
+            font-size: 1.8rem;
+            color: #2a7a9a;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .letterhead-body {
+            margin-top: 40px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .letterhead-footer {
+            margin-top: 80px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.95rem;
+            color: #666;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #1a5f7a;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #13495e;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #545b62;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #1e7e34;
+            transform: translateY(-2px);
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            border-left: 4px solid #1a5f7a;
+        }
+        
+        .instructions h3 {
+            color: #1a5f7a;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            
+            .letterhead, .letterhead * {
+                visibility: visible;
+            }
+            
+            .letterhead {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 21cm;
+                height: 29.7cm;
+                box-shadow: none;
+                margin: 0;
+                padding: 2.5cm 2cm;
+            }
+            
+            .button-group, .controls, header, .instructions {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .letterhead {
+                transform: scale(0.85);
+                transform-origin: top center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .letterhead {
+                transform: scale(0.7);
+            }
+            
+            .button-group {
+                justify-content: center;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>دائرة الضيافة Dairat Al Diyaafah</h1>
+            <p>Letterhead Generator - Create and Print Professional Letterhead</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="controls">
+                <h2 class="section-title">Letterhead Content</h2>
+                
+                <div class="form-group">
+                    <label for="recipientName">Recipient Name/Title</label>
+                    <input type="text" id="recipientName" placeholder="Enter recipient name or title">
+                </div>
+                
+                <div class="form-group">
+                    <label for="letterDate">Date</label>
+                    <input type="date" id="letterDate" value="">
+                </div>
+                
+                <div class="form-group">
+                    <label for="letterSubject">Subject</label>
+                    <input type="text" id="letterSubject" placeholder="Enter letter subject">
+                </div>
+                
+                <div class="form-group">
+                    <label for="letterContent">Letter Content</label>
+                    <textarea id="letterContent" placeholder="Type your letter content here...">Dear Sir/Madam,
+
+This letter is to inform you that we have received your inquiry and will respond within 3-5 business days.
+
+We appreciate your interest in Dairat Al Diyaafah and look forward to serving your hospitality needs.
+
+Sincerely,
+
+Dairat Al Diyaafah Team</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signatoryName">Signatory Name</label>
+                    <input type="text" id="signatoryName" placeholder="Enter signatory name" value="Manager">
+                </div>
+                
+                <div class="form-group">
+                    <label for="signatoryTitle">Signatory Title</label>
+                    <input type="text" id="signatoryTitle" placeholder="Enter signatory title" value="Hospitality Department">
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" id="updatePreview">
+                        <i class="fas fa-sync-alt"></i> Update Preview
+                    </button>
+                    <button class="btn btn-success" id="printLetter">
+                        <i class="fas fa-print"></i> Print Letterhead
+                    </button>
+                    <button class="btn btn-secondary" id="savePdf">
+                        <i class="fas fa-file-pdf"></i> Save as PDF
+                    </button>
+                </div>
+                
+                <div class="instructions">
+                    <h3>How to Use</h3>
+                    <ul>
+                        <li>Fill in the form fields to customize your letterhead</li>
+                        <li>Click "Update Preview" to see changes</li>
+                        <li>Use "Print Letterhead" to print directly</li>
+                        <li>Use "Save as PDF" to generate a PDF file (using your browser's print dialog)</li>
+                        <li>The company logo is automatically added as a watermark</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="letterhead-preview">
+                <h2 class="section-title">Letterhead Preview (A4 Size)</h2>
+                <p>This preview shows how the letterhead will look when printed. The watermark logo is visible in the background.</p>
+                
+                <div class="preview-container">
+                    <div class="letterhead" id="letterheadPreview">
+                        <div class="letterhead-content">
+                            <div class="letterhead-header">
+                                <div class="company-name-arabic">دائرة الضيافة</div>
+                                <div class="company-name-english">Dairat Al Diyaafah</div>
+                                <div style="color: #666; font-size: 1rem;">Hospitality Excellence Since 2010</div>
+                            </div>
+                            
+                            <div class="letterhead-body">
+                                <div id="previewRecipient" style="margin-bottom: 20px;">
+                                    <strong>To:</strong> [Recipient Name/Title]
+                                </div>
+                                
+                                <div id="previewDate" style="margin-bottom: 20px;">
+                                    <strong>Date:</strong> [Date]
+                                </div>
+                                
+                                <div id="previewSubject" style="margin-bottom: 30px;">
+                                    <strong>Subject:</strong> [Letter Subject]
+                                </div>
+                                
+                                <div id="previewContent" style="margin-bottom: 40px;">
+                                    [Letter content will appear here]
+                                </div>
+                                
+                                <div id="previewSignatory" style="margin-top: 60px;">
+                                    <div style="margin-bottom: 10px;">Sincerely,</div>
+                                    <div style="margin-bottom: 5px;"><strong>[Signatory Name]</strong></div>
+                                    <div style="color: #666;">[Signatory Title]</div>
+                                </div>
+                            </div>
+                            
+                            <div class="letterhead-footer">
+                                <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                                    <div>
+                                        <strong>Address:</strong> 123 Hospitality Street, Riyadh, Saudi Arabia
+                                    </div>
+                                    <div>
+                                        <strong>Phone:</strong> +966 11 123 4567
+                                    </div>
+                                    <div>
+                                        <strong>Email:</strong> info@dairataldiyaafah.com
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set today's date as default
+        document.getElementById('letterDate').valueAsDate = new Date();
+        
+        // Update preview function
+        function updatePreview() {
+            const recipient = document.getElementById('recipientName').value || '[Recipient Name/Title]';
+            const date = document.getElementById('letterDate').value 
+                ? new Date(document.getElementById('letterDate').value).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                }) 
+                : '[Date]';
+            const subject = document.getElementById('letterSubject').value || '[Letter Subject]';
+            const content = document.getElementById('letterContent').value || '[Letter content will appear here]';
+            const signatoryName = document.getElementById('signatoryName').value || '[Signatory Name]';
+            const signatoryTitle = document.getElementById('signatoryTitle').value || '[Signatory Title]';
+            
+            document.getElementById('previewRecipient').innerHTML = `<strong>To:</strong> ${recipient}`;
+            document.getElementById('previewDate').innerHTML = `<strong>Date:</strong> ${date}`;
+            document.getElementById('previewSubject').innerHTML = `<strong>Subject:</strong> ${subject}`;
+            document.getElementById('previewContent').innerHTML = content.replace(/\n/g, '<br>');
+            document.getElementById('previewSignatory').innerHTML = `
+                <div style="margin-bottom: 10px;">Sincerely,</div>
+                <div style="margin-bottom: 5px;"><strong>${signatoryName}</strong></div>
+                <div style="color: #666;">${signatoryTitle}</div>
+            `;
+        }
+        
+        // Print function
+        function printLetterhead() {
+            updatePreview();
+            window.print();
+        }
+        
+        // Save as PDF function
+        function saveAsPDF() {
+            updatePreview();
+            
+            // Open print dialog for PDF generation
+            setTimeout(() => {
+                window.print();
+            }, 100);
+        }
+        
+        // Event listeners
+        document.getElementById('updatePreview').addEventListener('click', updatePreview);
+        document.getElementById('printLetter').addEventListener('click', printLetterhead);
+        document.getElementById('savePdf').addEventListener('click', saveAsPDF);
+        
+        // Update preview when inputs change
+        document.getElementById('recipientName').addEventListener('input', updatePreview);
+        document.getElementById('letterDate').addEventListener('change', updatePreview);
+        document.getElementById('letterSubject').addEventListener('input', updatePreview);
+        document.getElementById('letterContent').addEventListener('input', updatePreview);
+        document.getElementById('signatoryName').addEventListener('input', updatePreview);
+        document.getElementById('signatoryTitle').addEventListener('input', updatePreview);
+        
+        // Initialize preview on page load
+        window.addEventListener('DOMContentLoaded', updatePreview);
+    </script>
+</body>
+</html>
