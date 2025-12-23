@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dairat Al Diyaafah - Letterhead Generator</title>
+    <title>دائرة الضيافة Dairat Al Diyaafah - Letterhead Generator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -90,11 +90,79 @@
             margin-bottom: 20px;
         }
         
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
             color: #444;
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+            margin-right: 10px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #1a5f7a;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+        
+        .toggle-label {
+            font-weight: 500;
+            color: #555;
         }
         
         input, textarea, select {
@@ -113,7 +181,7 @@
         }
         
         textarea {
-            min-height: 150px;
+            min-height: 120px;
             resize: vertical;
         }
         
@@ -149,7 +217,7 @@
             background-image: url('https://6949d89d30e1aa8ca4b7ef56.imgix.net/825893fb-c206-4009-b425-4b77cdb40004.jpeg');
             background-repeat: no-repeat;
             background-position: center;
-            background-size: 60%;
+            background-size: 50%;
             opacity: 0.08;
             z-index: 0;
             pointer-events: none;
@@ -161,14 +229,32 @@
         }
         
         .letterhead-header {
-            text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
             border-bottom: 2px solid #1a5f7a;
-            padding-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+        }
+        
+        .company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .company-name-container {
+            flex: 1;
         }
         
         .company-name-arabic {
-            font-size: 2.8rem;
+            font-size: 2rem;
             color: #1a5f7a;
             font-weight: bold;
             margin-bottom: 5px;
@@ -176,24 +262,59 @@
         }
         
         .company-name-english {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: #2a7a9a;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .company-tagline {
+            color: #666;
+            font-size: 0.95rem;
         }
         
         .letterhead-body {
-            margin-top: 40px;
-            font-size: 1.1rem;
+            margin-top: 30px;
+            font-size: 1.05rem;
             line-height: 1.8;
         }
         
+        .field-container {
+            margin-bottom: 15px;
+        }
+        
+        .field-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .field-row .field-container {
+            flex: 1;
+        }
+        
+        .field-label {
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 5px;
+        }
+        
+        .field-value {
+            padding-left: 5px;
+        }
+        
         .letterhead-footer {
-            margin-top: 80px;
+            margin-top: 100px;
             padding-top: 20px;
             border-top: 1px solid #ddd;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #666;
+        }
+        
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
         .button-group {
@@ -268,28 +389,46 @@
             margin-bottom: 8px;
         }
         
+        .hidden {
+            display: none !important;
+        }
+        
         @media print {
+            body, html {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            
             body * {
                 visibility: hidden;
             }
             
-            .letterhead, .letterhead * {
+            .letterhead-container, .letterhead-container * {
                 visibility: visible;
             }
             
-            .letterhead {
+            .letterhead-container {
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: 21cm;
-                height: 29.7cm;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .letterhead {
                 box-shadow: none;
                 margin: 0;
                 padding: 2.5cm 2cm;
+                width: 21cm;
+                height: 29.7cm;
             }
             
-            .button-group, .controls, header, .instructions {
-                display: none;
+            .button-group, .controls, header, .instructions, .no-print {
+                display: none !important;
             }
         }
         
@@ -312,6 +451,25 @@
             .btn {
                 width: 100%;
             }
+            
+            .letterhead-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .company-logo {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .company-name-arabic {
+                font-size: 1.7rem;
+            }
+            
+            .company-name-english {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
@@ -326,9 +484,31 @@
             <div class="controls">
                 <h2 class="section-title">Letterhead Content</h2>
                 
-                <div class="form-group">
-                    <label for="recipientName">Recipient Name/Title</label>
-                    <input type="text" id="recipientName" placeholder="Enter recipient name or title">
+                <div class="toggle-container">
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="toggleRecipient" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                    <label for="toggleRecipient" class="toggle-label">Include Recipient</label>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="recipientNameAr">Recipient Name (Arabic)</label>
+                        <input type="text" id="recipientNameAr" placeholder="اسم المستلم">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipientNameEn">Recipient Name (English)</label>
+                        <input type="text" id="recipientNameEn" placeholder="Recipient Name">
+                    </div>
+                </div>
+                
+                <div class="toggle-container">
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="toggleDate" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                    <label for="toggleDate" class="toggle-label">Include Date</label>
                 </div>
                 
                 <div class="form-group">
@@ -336,32 +516,84 @@
                     <input type="date" id="letterDate" value="">
                 </div>
                 
-                <div class="form-group">
-                    <label for="letterSubject">Subject</label>
-                    <input type="text" id="letterSubject" placeholder="Enter letter subject">
+                <div class="toggle-container">
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="toggleSubject" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                    <label for="toggleSubject" class="toggle-label">Include Subject</label>
                 </div>
                 
-                <div class="form-group">
-                    <label for="letterContent">Letter Content</label>
-                    <textarea id="letterContent" placeholder="Type your letter content here...">Dear Sir/Madam,
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="letterSubjectAr">Subject (Arabic)</label>
+                        <input type="text" id="letterSubjectAr" placeholder="موضوع الرسالة">
+                    </div>
+                    <div class="form-group">
+                        <label for="letterSubjectEn">Subject (English)</label>
+                        <input type="text" id="letterSubjectEn" placeholder="Letter Subject">
+                    </div>
+                </div>
+                
+                <div class="toggle-container">
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="toggleContent" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                    <label for="toggleContent" class="toggle-label">Include Letter Content</label>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="letterContentAr">Letter Content (Arabic)</label>
+                        <textarea id="letterContentAr" placeholder="محتوى الرسالة باللغة العربية">السيد/ السيدة المحترم/ المحترمة،
+
+نحن نؤكد لكم استلام استفساركم وسنقوم بالرد خلال 3-5 أيام عمل.
+
+نقدر اهتمامكم بدائرة الضيافة ونتطلع لخدمة احتياجاتكم في مجال الضيافة.
+
+بكل الاحترام،</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="letterContentEn">Letter Content (English)</label>
+                        <textarea id="letterContentEn" placeholder="Letter content in English">Dear Sir/Madam,
 
 This letter is to inform you that we have received your inquiry and will respond within 3-5 business days.
 
 We appreciate your interest in Dairat Al Diyaafah and look forward to serving your hospitality needs.
 
-Sincerely,
-
-Dairat Al Diyaafah Team</textarea>
+Sincerely,</textarea>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="signatoryName">Signatory Name</label>
-                    <input type="text" id="signatoryName" placeholder="Enter signatory name" value="Manager">
+                <div class="toggle-container">
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="toggleSignatory" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                    <label for="toggleSignatory" class="toggle-label">Include Signatory</label>
                 </div>
                 
-                <div class="form-group">
-                    <label for="signatoryTitle">Signatory Title</label>
-                    <input type="text" id="signatoryTitle" placeholder="Enter signatory title" value="Hospitality Department">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="signatoryNameAr">Signatory Name (Arabic)</label>
+                        <input type="text" id="signatoryNameAr" placeholder="اسم الموقع" value="المدير">
+                    </div>
+                    <div class="form-group">
+                        <label for="signatoryNameEn">Signatory Name (English)</label>
+                        <input type="text" id="signatoryNameEn" placeholder="Signatory Name" value="Manager">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="signatoryTitleAr">Signatory Title (Arabic)</label>
+                        <input type="text" id="signatoryTitleAr" placeholder="المنصب" value="دائرة الضيافة">
+                    </div>
+                    <div class="form-group">
+                        <label for="signatoryTitleEn">Signatory Title (English)</label>
+                        <input type="text" id="signatoryTitleEn" placeholder="Signatory Title" value="Hospitality Department">
+                    </div>
                 </div>
                 
                 <div class="button-group">
@@ -379,62 +611,74 @@ Dairat Al Diyaafah Team</textarea>
                 <div class="instructions">
                     <h3>How to Use</h3>
                     <ul>
-                        <li>Fill in the form fields to customize your letterhead</li>
+                        <li>Use toggle switches to include/exclude sections from the letterhead</li>
+                        <li>Fill in both Arabic and English fields as needed</li>
                         <li>Click "Update Preview" to see changes</li>
                         <li>Use "Print Letterhead" to print directly</li>
-                        <li>Use "Save as PDF" to generate a PDF file (using your browser's print dialog)</li>
-                        <li>The company logo is automatically added as a watermark</li>
+                        <li>Use "Save as PDF" to generate a PDF file</li>
+                        <li>The company logo is displayed beside the company name</li>
                     </ul>
                 </div>
             </div>
             
             <div class="letterhead-preview">
                 <h2 class="section-title">Letterhead Preview (A4 Size)</h2>
-                <p>This preview shows how the letterhead will look when printed. The watermark logo is visible in the background.</p>
+                <p>This preview shows how the letterhead will look when printed. The company logo is displayed beside the company name.</p>
                 
                 <div class="preview-container">
-                    <div class="letterhead" id="letterheadPreview">
-                        <div class="letterhead-content">
-                            <div class="letterhead-header">
-                                <div class="company-name-arabic">دائرة الضيافة</div>
-                                <div class="company-name-english">Dairat Al Diyaafah</div>
-                                <div style="color: #666; font-size: 1rem;">Hospitality Excellence Since 2010</div>
-                            </div>
-                            
-                            <div class="letterhead-body">
-                                <div id="previewRecipient" style="margin-bottom: 20px;">
-                                    <strong>To:</strong> [Recipient Name/Title]
-                                </div>
-                                
-                                <div id="previewDate" style="margin-bottom: 20px;">
-                                    <strong>Date:</strong> [Date]
-                                </div>
-                                
-                                <div id="previewSubject" style="margin-bottom: 30px;">
-                                    <strong>Subject:</strong> [Letter Subject]
-                                </div>
-                                
-                                <div id="previewContent" style="margin-bottom: 40px;">
-                                    [Letter content will appear here]
-                                </div>
-                                
-                                <div id="previewSignatory" style="margin-top: 60px;">
-                                    <div style="margin-bottom: 10px;">Sincerely,</div>
-                                    <div style="margin-bottom: 5px;"><strong>[Signatory Name]</strong></div>
-                                    <div style="color: #666;">[Signatory Title]</div>
-                                </div>
-                            </div>
-                            
-                            <div class="letterhead-footer">
-                                <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                                    <div>
-                                        <strong>Address:</strong> 123 Hospitality Street, Riyadh, Saudi Arabia
+                    <div class="letterhead-container">
+                        <div class="letterhead" id="letterheadPreview">
+                            <div class="letterhead-content">
+                                <div class="letterhead-header">
+                                    <div class="company-logo">
+                                        <img src="https://6949d89d30e1aa8ca4b7ef56.imgix.net/825893fb-c206-4009-b425-4b77cdb40004.jpeg" alt="Dairat Al Diyaafah Logo">
                                     </div>
-                                    <div>
-                                        <strong>Phone:</strong> +966 11 123 4567
+                                    <div class="company-name-container">
+                                        <div class="company-name-arabic">دائرة الضيافة</div>
+                                        <div class="company-name-english">Dairat Al Diyaafah</div>
+                                        <div class="company-tagline">Hospitality Excellence Since 2010</div>
                                     </div>
-                                    <div>
-                                        <strong>Email:</strong> info@dairataldiyaafah.com
+                                </div>
+                                
+                                <div class="letterhead-body">
+                                    <div id="previewRecipient" class="field-container">
+                                        <div class="field-label">To / إلى:</div>
+                                        <div class="field-value">[Recipient Name]</div>
+                                    </div>
+                                    
+                                    <div id="previewDate" class="field-container">
+                                        <div class="field-label">Date / التاريخ:</div>
+                                        <div class="field-value">[Date]</div>
+                                    </div>
+                                    
+                                    <div id="previewSubject" class="field-container">
+                                        <div class="field-label">Subject / الموضوع:</div>
+                                        <div class="field-value">[Letter Subject]</div>
+                                    </div>
+                                    
+                                    <div id="previewContent" class="field-container">
+                                        <div class="field-label">Letter Content / محتوى الرسالة:</div>
+                                        <div class="field-value">[Letter content will appear here]</div>
+                                    </div>
+                                    
+                                    <div id="previewSignatory" class="field-container" style="margin-top: 60px;">
+                                        <div class="field-label">Sincerely / بكل الاحترام,</div>
+                                        <div class="field-value"><strong>[Signatory Name]</strong></div>
+                                        <div class="field-value">[Signatory Title]</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="letterhead-footer">
+                                    <div class="footer-row">
+                                        <div>
+                                            <strong>Address / العنوان:</strong> 123 Hospitality Street, Riyadh, Saudi Arabia
+                                        </div>
+                                        <div>
+                                            <strong>Phone / الهاتف:</strong> +966 11 123 4567
+                                        </div>
+                                        <div>
+                                            <strong>Email / البريد الإلكتروني:</strong> info@dairataldiyaafah.com
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -449,63 +693,400 @@ Dairat Al Diyaafah Team</textarea>
         // Set today's date as default
         document.getElementById('letterDate').valueAsDate = new Date();
         
+        // Store toggle states
+        const toggleStates = {
+            recipient: true,
+            date: true,
+            subject: true,
+            content: true,
+            signatory: true
+        };
+        
         // Update preview function
         function updatePreview() {
-            const recipient = document.getElementById('recipientName').value || '[Recipient Name/Title]';
+            // Get toggle states
+            toggleStates.recipient = document.getElementById('toggleRecipient').checked;
+            toggleStates.date = document.getElementById('toggleDate').checked;
+            toggleStates.subject = document.getElementById('toggleSubject').checked;
+            toggleStates.content = document.getElementById('toggleContent').checked;
+            toggleStates.signatory = document.getElementById('toggleSignatory').checked;
+            
+            // Get field values
+            const recipientAr = document.getElementById('recipientNameAr').value || '';
+            const recipientEn = document.getElementById('recipientNameEn').value || '';
             const date = document.getElementById('letterDate').value 
                 ? new Date(document.getElementById('letterDate').value).toLocaleDateString('en-US', { 
                     year: 'numeric', 
                     month: 'long', 
                     day: 'numeric' 
                 }) 
-                : '[Date]';
-            const subject = document.getElementById('letterSubject').value || '[Letter Subject]';
-            const content = document.getElementById('letterContent').value || '[Letter content will appear here]';
-            const signatoryName = document.getElementById('signatoryName').value || '[Signatory Name]';
-            const signatoryTitle = document.getElementById('signatoryTitle').value || '[Signatory Title]';
+                : '';
+            const subjectAr = document.getElementById('letterSubjectAr').value || '';
+            const subjectEn = document.getElementById('letterSubjectEn').value || '';
+            const contentAr = document.getElementById('letterContentAr').value || '';
+            const contentEn = document.getElementById('letterContentEn').value || '';
+            const signatoryNameAr = document.getElementById('signatoryNameAr').value || '';
+            const signatoryNameEn = document.getElementById('signatoryNameEn').value || '';
+            const signatoryTitleAr = document.getElementById('signatoryTitleAr').value || '';
+            const signatoryTitleEn = document.getElementById('signatoryTitleEn').value || '';
             
-            document.getElementById('previewRecipient').innerHTML = `<strong>To:</strong> ${recipient}`;
-            document.getElementById('previewDate').innerHTML = `<strong>Date:</strong> ${date}`;
-            document.getElementById('previewSubject').innerHTML = `<strong>Subject:</strong> ${subject}`;
-            document.getElementById('previewContent').innerHTML = content.replace(/\n/g, '<br>');
-            document.getElementById('previewSignatory').innerHTML = `
-                <div style="margin-bottom: 10px;">Sincerely,</div>
-                <div style="margin-bottom: 5px;"><strong>${signatoryName}</strong></div>
-                <div style="color: #666;">${signatoryTitle}</div>
-            `;
+            // Update recipient section
+            const recipientContainer = document.getElementById('previewRecipient');
+            if (toggleStates.recipient && (recipientAr || recipientEn)) {
+                recipientContainer.classList.remove('hidden');
+                const recipientText = [];
+                if (recipientAr) recipientText.push(recipientAr);
+                if (recipientEn) recipientText.push(recipientEn);
+                document.querySelector('#previewRecipient .field-value').textContent = recipientText.join(' / ');
+            } else {
+                recipientContainer.classList.add('hidden');
+            }
+            
+            // Update date section
+            const dateContainer = document.getElementById('previewDate');
+            if (toggleStates.date && date) {
+                dateContainer.classList.remove('hidden');
+                document.querySelector('#previewDate .field-value').textContent = date;
+            } else {
+                dateContainer.classList.add('hidden');
+            }
+            
+            // Update subject section
+            const subjectContainer = document.getElementById('previewSubject');
+            if (toggleStates.subject && (subjectAr || subjectEn)) {
+                subjectContainer.classList.remove('hidden');
+                const subjectText = [];
+                if (subjectAr) subjectText.push(subject subjectText.push(subjectAr);
+                if (Ar);
+                if (subjectEn) subjectText.push(subjectEn);
+                document.querySelector('#previewSubject .fieldsubjectEn) subjectText.push(subjectEn);
+                document.querySelector('#previewSubject .field-value').textContent = subjectText.join(' /-value').textContent = subjectText.join(' / ');
+            } else ');
+            } else {
+                subjectContainer.classList.add('hidden');
+            {
+                subjectContainer.classList.add('hidden');
+            }
+            
+            // }
+            
+            // Update Update content section
+            const contentContainer = document.getElementById(' content section
+previewContent');
+            if (toggleStates.content && (content            const contentContainer = document.getElementById('previewContent');
+            if (toggleStates.contentAr || contentEn)) {
+                && (contentAr || contentEn)) {
+                contentContainer.classList.remove('hidden');
+                let contentText contentContainer.classList.remove('hidden');
+                let contentText = '';
+ = '';
+                if (content                if (contentAr &&Ar && contentEn) {
+ contentEn) {
+                    contentText = `<div dir="                    contentText =rtl" style="text-align: right; margin-bottom: 20px;">${content `<div dir="rtl" style="text-align: right; margin-bottom: 20Ar.replace(/\n/g, '<brpx;">${contentAr.replace(/\n/g, '<br>')}</div><div>${contentEn>')}</div><div>${contentEn.replace(/\.replace(/\n/g, '<n/g, '<br>')}</div>`;
+                }br>')}</div>`;
+                } else if (content else if (contentAr)Ar) {
+                    contentText {
+                    contentText = `<div dir="rtl" = `<div dir="rt style="text-align: right;">${contentAr.replace(/\l" style="text-align: right;">${contentAr.replacen/g, '<br>')(/\n/g, '<br>')}</div>`;
+}</div>`;
+                }                } else if (contentEn) {
+                    contentText else if (contentEn) {
+                    contentText = `<div>${content = `<div>${contentEn.replace(En.replace(/\n/g,/\n/g, '<br>')}</div>`;
+                '<br>')}</div>`;
+                }
+                document.querySelector }
+                document.querySelector('#previewContent .field-value').('#previewContent .field-value').innerHTML = contentTextinnerHTML = contentText;
+;
+            } else {
+                content            } else {
+                contentContainer.classList.add('hidden');
+           Container.classList.add('hidden');
+            }
+            
+            // Update }
+            
+            // Update signatory signatory section
+            const signatoryContainer = document.getElementById('pre section
+            const signatoryContainer = document.getElementById('previewSignatory');
+            if (toggleviewSignatory');
+            if (toggleStates.signatory && (signStates.signatory && (signatoryNameAratoryNameAr || signatoryName || signatoryNameEnEn || || signatoryTitleAr signatoryTitleAr || signatoryTitleEn)) {
+                || signatoryTitleEn)) {
+                signatoryContainer.classList.remove('hidden');
+                
+                const signatoryNameText signatoryContainer.classList.remove('hidden');
+                
+                const signatoryNameText = [];
+                if (sign = [];
+                if (signatoryatoryNameAr) signatoryNameNameAr) signatoryNameText.push(signatoryNameArText.push(signatoryNameAr);
+                if (sign);
+                if (signatoryNameatoryNameEn) signatoryNameText.push(signatoryNameEn) signatoryNameText.push(signatoryNameEnEn);
+                
+                const);
+                
+                const signatoryTitleText = [];
+                if (sign signatoryTitleText = [];
+               atoryTitleAr) signatoryTitleText.push(signatory if (signatoryTitleAr) signatoryTitleText.push(signatoryTitleAr);
+               TitleAr);
+                if if (signatoryTitleEn) (signatoryTitleEn) signatoryTitleText.push(signatory signatoryTitleText.push(signatoryTitleEn);
+                
+                documentTitleEn);
+                
+                document.querySelector('#previewSignatory .field-value.querySelector('#previewSignatory .:nth-of-type(field-value:nth-of-type(1)').innerHTML =1)').innerHTML = `<strong>${signatory `<strong>${signatoryNameText.join(' / ')}NameText.join(' / ')}</strong>`;
+               </strong>`;
+                document.querySelector('#previewSignatory . document.querySelector('#previewSignatory .field-valuefield-value:nth-of-type(2)').textContent:nth-of-type(2)').textContent = signatoryTitleText.join(' / = signatoryTitleText.join(' / ');
+            } else ');
+            } else {
+                signatoryContainer {
+                signatoryContainer.classList.add('hidden');
+            }
+        }
+.classList.add('hidden');
+            }
         }
         
-        // Print function
+        // Print function -        
+        // Print function - F FIXED
         function printLetterhead() {
-            updatePreview();
-            window.print();
+            //IXED
+        function printLetterhead() {
+            // Create a hidden if Create a hidden iframe for printing
+            constrame for printing
+            const iframe = document.createElement(' iframe = document.createElement('iframe');
+            iframe.style.positioniframe');
+            iframe.style.position = 'absolute';
+            iframe.style = 'absolute';
+            iframe.style.width = '0.width = '0';
+           ';
+            iframe.style.height = '0';
+            if iframe.style.height = '0rame.style.border = 'none';
+';
+            iframe.style.border = 'none';
+            document.body.appendChild(iframe);
+            
+            document.body.appendChild(iframe            // Get the letterhead HTML
+            const letterhead);
+            
+            // Get the letterhead HTML
+            const letterheadElement = document.getElementById('letterheadPreview');
+            constElement = document.getElementById('letterheadPreview');
+            const letter letterheadClone = letterheadClone = letterheadElement.cloneNode(true);
+            
+           headElement.cloneNode(true);
+            
+            // // Apply print-specific styles Apply print-specific styles
+           
+            letterheadClone.style letterheadClone.style.boxShadow = 'none.boxShadow = 'none';
+            letterheadClone.style.margin =';
+            letterheadClone.style.margin = '0';
+            letterheadClone.style.width = '21cm';
+            letterheadClone '0';
+            letterheadClone.style.width = '21cm';
+            letterheadClone.style.height = '29.style.height = '29.7cm';
+            
+            // Write.7cm';
+            
+            // Write HTML to if HTML to iframe
+rame
+            const iframeDoc = iframe.contentWindow.d            const iframeDoc = iframe.contentWindow.document;
+           ocument;
+            iframeDoc.open iframeDoc.open();
+            iframeDoc.write(`
+();
+            iframeDoc.write(`
+                <!DOCTYPE                <!DOCTYPE html>
+ html>
+                <html>
+                               <html>
+                <head>
+                    <title>D <head>
+                    <title>Dairat Al Diyaafah Letterheadairat Al Diyaafah Letterhead</title>
+</title>
+                    <style>
+                        @                    <style>
+                        @media print {
+                            @pagemedia print {
+                            @page {
+                                size: A4;
+                                margin: {
+                                size: A4;
+                                margin: 2 2.5cm .5cm 2cm;
+                            }
+                            body {
+                                margin2cm;
+                            }
+                            body {
+                                margin: : 0;
+                                padding0;
+                                padding: 0;
+                                font-family: 'Seg: 0;
+                                font-family: 'Segoe UI',oe UI', Tahoma, Geneva, Verdana, sans Tahoma, Geneva, Verdana, sans-serif;
+                            }
+-serif;
+                            }
+                            .letter                            .letterhead {
+                                width: 21cm;
+head {
+                                width: 21cm;
+                                height:                                 height: 29.7cm;
+                                position: relative;
+29.7cm;
+                                position: relative;
+                                overflow                                overflow: hidden;
+                           : hidden;
+                            }
+                            .letterhead::before {
+                                content }
+                            .letterhead::: "";
+                                position: absolute;
+                                top: 0before {
+                                content: "";
+                                position: absolute;
+                                top: 0;
+                                left;
+                                left: 0;
+                                width: 100%;
+: 0;
+                                width: 100%;
+                                height: 100                                height: 100%;
+%;
+                                background-image: url('https://6949d                                background-image: url('https89d30e1aa8ca://6949d89d30e1aa8ca4b7ef56.imgix4b7ef56.imgix.net/825893fb.net/825893fb-c206-4009-b425--c206-4009-b425-4b77cd4b77cdb40004.jpeg');
+                                background-repeatb40004.jpeg');
+                                background-repeat: no-repeat;
+                                background: no-repeat;
+                                background-position: center;
+                                background-size:-position: center;
+                                background-size: 50%;
+                                50%;
+                                opacity: 0.08;
+ opacity: 0.08                                z;
+                                z-index-index: 0;
+: 0;
+                                pointer-events: none;
+                                                           pointer-events: none;
+                            }
+                            .letterhead-content {
+                                position: relative;
+                                z-index: }
+                            .letterhead-content {
+                                position: relative;
+                                z-index: 1;
+                            }
+                            .hidden {
+                                display 1;
+                            }
+                            .hidden {
+                                display: none !important;
+                            }
+                        }
+                    </style: none !important;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                   >
+                </head>
+                <body>
+                    ${letterheadClone.outerHTML ${letterheadClone.outerHTML}
+                </body>
+                </html>
+            `);
+            if}
+                </body>
+                </html>
+            `);
+            iframeDoc.close();
+            
+           rameDoc.close();
+            
+            // Wait for iframe to load and // Wait for iframe to load and print
+            iframe print
+            iframe.onload =.onload = function() {
+                function() {
+                setTimeout(() => {
+                    iframe.contentWindow.focus();
+                    iframe setTimeout(() => {
+                    iframe.contentWindow.focus();
+                    iframe.content.contentWindow.print();
+                    
+                    // Remove iframe after printing
+Window.print();
+                    
+                    // Remove iframe after printing
+                    setTimeout(() => {
+                        document.body.removeChild                    setTimeout(() => {
+                        document.body.removeChild(iframe(iframe);
+                    }, 100);
+                },);
+                    }, 100);
+                }, 500);
+            };
+        500);
+            };
         }
         
-        // Save as PDF function
+        // Save as }
+        
+        // Save as PDF function - FIXED
+        PDF function - FIXED
         function saveAsPDF() {
-            updatePreview();
-            
-            // Open print dialog for PDF generation
-            setTimeout(() => {
-                window.print();
-            }, 100);
+ function saveAsPDF() {
+            // For PDF            // For PDF, we'll use the, we'll use the same print function but with a different approach same print function but with a different approach
+            printLetterhead();
+
+            printLetterhead();
         }
+        
+        // Event listeners        }
         
         // Event listeners
-        document.getElementById('updatePreview').addEventListener('click', updatePreview);
-        document.getElementById('printLetter').addEventListener('click', printLetterhead);
+        document.getElementById('update
+        document.getElementById('updatePreview').addEventListener('click',Preview').addEventListener('click', updatePreview);
+        document.getElementById updatePreview);
+        document.getElementById('printLetter').addEventListener('printLetter').addEventListener('click', printLetterhead('click', printLetterhead);
+        document.getElementById('save);
         document.getElementById('savePdf').addEventListener('click', saveAsPDF);
         
-        // Update preview when inputs change
-        document.getElementById('recipientName').addEventListener('input', updatePreview);
-        document.getElementById('letterDate').addEventListener('change', updatePreview);
-        document.getElementById('letterSubject').addEventListener('input', updatePreview);
-        document.getElementById('letterContent').addEventListener('input', updatePreview);
-        document.getElementById('signatoryName').addEventListener('input', updatePreview);
-        document.getElementById('signatoryTitle').addEventListener('input', updatePreview);
+       Pdf').addEventListener('click', saveAsPDF);
+        
+        // Update preview when inputs // Update preview when inputs change
+        const input change
+        const inputIds = [
+            'recipientNameAr', 'recipIds = [
+            'recipientNameAr', 'recipientNameientNameEn', 'letterDate', 
+            'letterSubjectEn', 'letterDate', 
+            'letterSubjectAr',Ar', 'letterSubjectEn 'letterSubjectEn', 'letterContent', 'letterContentAr', 
+            'letterContentEnAr', 
+            'letterContentEn', 'signatoryNameAr', 'signatory', 'signatoryNameAr', 'signatoryNameEnNameEn',
+            'sign',
+            'signatoryTitleAr', 'signatoryTitleEn'
+        ];
+        
+atoryTitleAr', 'signatoryTitleEn'
+        ];
+        
+               inputIds.forEach(id => {
+            document.getElementById(id).addEventListener('input inputIds.forEach(id => {
+            document.getElementById(id).addEventListener('input', updatePreview', updatePreview);
+        });
+        
+        // Update preview when to);
+        });
+        
+        // Update preview when togglesggles change
+        const toggleIds = ['toggleRec change
+        const toggleIds = ['toggleRecipient', 'toggleipient', 'toggleDate', 'toggleSubject', 'toggleContent',Date', 'toggleSubject', 'toggleContent', 'toggle 'toggleSignatory'];
+        toggleIds.forEach(id => {
+Signatory'];
+        toggleIds.forEach(id            document.getElementById(id).addEventListener('change', updatePreview => {
+            document.getElementById(id).addEventListener('change', updatePreview);
+        });
+);
+        });
         
         // Initialize preview on page load
-        window.addEventListener('DOMContentLoaded', updatePreview);
+        window        
+        // Initialize preview on page load
+        window.addEventListener('DOMContentLoaded', updatePreview.addEventListener('DOMContentLoaded',);
     </script>
 </body>
 </html>
