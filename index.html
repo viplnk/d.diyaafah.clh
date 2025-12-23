@@ -204,7 +204,6 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
-            page-break-after: always;
         }
         
         .letterhead::before {
@@ -404,8 +403,8 @@
         @media print {
             body * {
                 visibility: hidden;
-                margin: 0;
-                padding: 0;
+                margin: 0 !important;
+                padding: 0 !important;
             }
             
             #printable-letterhead, #printable-letterhead * {
@@ -413,23 +412,23 @@
             }
             
             #printable-letterhead {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
                 display: block !important;
             }
             
             .letterhead {
-                box-shadow: none;
-                margin: 0;
-                padding: 2.5cm 2cm;
-                width: 21cm;
-                height: 29.7cm;
-                page-break-after: always;
+                box-shadow: none !important;
+                margin: 0 auto !important;
+                padding: 2.5cm 2cm !important;
+                width: 21cm !important;
+                min-height: 29.7cm !important;
+                position: relative !important;
             }
             
             .button-group, .controls, header, .instructions, .no-print {
@@ -812,53 +811,43 @@ Sincerely,</textarea>
             }
             
             console.log("Preview updated successfully");
+            
+            // Also update the printable version
+            updatePrintableVersion();
         }
         
-        // Create printable version
-        function createPrintableVersion() {
-            console.log("Creating printable version...");
+        // Create printable version that exactly matches preview
+        function updatePrintableVersion() {
+            console.log("Updating printable version...");
             
             // Get the current preview content
-            const letterheadElement = document.getElementById('letterheadPreview');
-            const clone = letterheadElement.cloneNode(true);
+            const previewElement = document.getElementById('letterheadPreview');
             
-            // Fix logo size in printable version
-            const logoImg = clone.querySelector('.company-logo img');
-            if (logoImg) {
-                logoImg.style.maxWidth = '80px';
-                logoImg.style.maxHeight = '80px';
-                logoImg.style.width = '80px';
-                logoImg.style.height = '80px';
-            }
+            // Create a deep clone of the preview
+            const clone = previewElement.cloneNode(true);
             
-            // Update the watermark size for printing
-            const watermarkStyle = document.createElement('style');
-            watermarkStyle.textContent = `
-                .letterhead::before {
-                    background-size: 50% !important;
-                    opacity: 0.08 !important;
-                }
-            `;
+            // Apply print-specific styles to the clone
+            clone.style.boxShadow = 'none';
+            clone.style.margin = '0 auto';
+            clone.style.width = '21cm';
+            clone.style.minHeight = '29.7cm';
+            clone.style.padding = '2.5cm 2cm';
+            clone.style.position = 'relative';
             
-            // Create printable container
+            // Update the printable container
             const printableContainer = document.getElementById('printable-letterhead');
             printableContainer.innerHTML = '';
-            printableContainer.appendChild(watermarkStyle);
             printableContainer.appendChild(clone);
             
-            console.log("Printable version created");
-            return printableContainer.innerHTML;
+            console.log("Printable version updated");
         }
         
-        // Print function - SIMPLIFIED AND FIXED
+        // Print function
         function printLetterhead() {
             console.log("Printing letterhead...");
             
-            // Update preview first
+            // Update preview and printable version first
             updatePreview();
-            
-            // Create printable version
-            createPrintableVersion();
             
             // Show the printable version
             const printableElement = document.getElementById('printable-letterhead');
@@ -874,15 +863,14 @@ Sincerely,</textarea>
         function saveAsPDF() {
             console.log("Generating PDF...");
             
-            // Update preview first
+            // Update preview and printable version first
             updatePreview();
             
-            // Create printable version
-            createPrintableVersion();
-            
-            // Create print window with proper styling
-            const printWindow = window.open('', '_blank');
+            // Get the printable content
             const printableContent = document.getElementById('printable-letterhead').innerHTML;
+            
+            // Create a new window with proper print styling
+            const printWindow = window.open('', '_blank');
             
             printWindow.document.write(`
                 <!DOCTYPE html>
@@ -890,92 +878,118 @@ Sincerely,</textarea>
                 <head>
                     <title>Dairat Al Diyaafah Letterhead</title>
                     <style>
-                        @media print {
-                            @page {
-                                size: A4;
-                                margin: 2.5cm 2cm;
-                            }
-                            body {
-                                margin: 0;
-                                padding: 0;
-                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                                width: 21cm;
-                                height: 29.7cm;
-                            }
-                            .letterhead {
-                                width: 21cm;
-                                height: 29.7cm;
-                                position: relative;
-                                overflow: hidden;
-                                padding: 2.5cm 2cm;
-                                box-sizing: border-box;
-                            }
-                            .letterhead::before {
-                                content: "";
-                                position: absolute;
-                                top: 0;
-                                left: 0;
-                                width: 100%;
-                                height: 100%;
-                                background-image: url('https://6949d89d30e1aa8ca4b7ef56.imgix.net/825893fb-c206-4009-b425-4b77cdb40004.jpeg');
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                background-size: 50%;
-                                opacity: 0.08;
-                                z-index: 0;
-                                pointer-events: none;
-                            }
-                            .letterhead-content {
-                                position: relative;
-                                z-index: 1;
-                            }
-                            .company-logo img {
-                                width: 80px !important;
-                                height: 80px !important;
-                                max-width: 80px !important;
-                                max-height: 80px !important;
-                            }
-                            .hidden {
-                                display: none !important;
-                            }
+                        @page {
+                            size: A4;
+                            margin: 2.5cm 2cm;
                         }
-                        @media screen {
-                            body {
-                                padding: 20px;
-                                background: #f5f5f5;
-                            }
-                            .letterhead {
-                                width: 21cm;
-                                min-height: 29.7cm;
-                                background: white;
-                                margin: 0 auto;
-                                padding: 2.5cm 2cm;
-                                box-shadow: 0 0 10px rgba(0,0,0,0.1);
-                                position: relative;
-                            }
-                            .letterhead::before {
-                                content: "";
-                                position: absolute;
-                                top: 0;
-                                left: 0;
-                                width: 100%;
-                                height: 100%;
-                                background-image: url('https://6949d89d30e1aa8ca4b7ef56.imgix.net/825893fb-c206-4009-b425-4b77cdb40004.jpeg');
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                background-size: 50%;
-                                opacity: 0.08;
-                                z-index: 0;
-                                pointer-events: none;
-                            }
-                            .letterhead-content {
-                                position: relative;
-                                z-index: 1;
-                            }
-                            .company-logo img {
-                                width: 80px;
-                                height: 80px;
-                            }
+                        body {
+                            margin: 0;
+                            padding: 0;
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                            background: white;
+                        }
+                        .letterhead {
+                            width: 21cm;
+                            min-height: 29.7cm;
+                            background-color: white;
+                            margin: 0 auto;
+                            padding: 2.5cm 2cm;
+                            position: relative;
+                            overflow: hidden;
+                            box-sizing: border-box;
+                        }
+                        .letterhead::before {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background-image: url('https://6949d89d30e1aa8ca4b7ef56.imgix.net/825893fb-c206-4009-b425-4b77cdb40004.jpeg');
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            background-size: 50%;
+                            opacity: 0.08;
+                            z-index: 0;
+                            pointer-events: none;
+                        }
+                        .letterhead-content {
+                            position: relative;
+                            z-index: 1;
+                            height: 100%;
+                            display: flex;
+                            flex-direction: column;
+                        }
+                        .letterhead-header {
+                            margin-bottom: 30px;
+                            padding-bottom: 15px;
+                            border-bottom: 2px solid #1a5f7a;
+                            display: flex;
+                            align-items: center;
+                            gap: 20px;
+                        }
+                        .company-logo {
+                            width: 80px;
+                            height: 80px;
+                            flex-shrink: 0;
+                        }
+                        .company-logo img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: contain;
+                        }
+                        .company-name-container {
+                            flex: 1;
+                        }
+                        .company-name-arabic {
+                            font-size: 2rem;
+                            color: #1a5f7a;
+                            font-weight: bold;
+                            margin-bottom: 5px;
+                            font-family: 'Segoe UI', Arial, sans-serif;
+                        }
+                        .company-name-english {
+                            font-size: 1.5rem;
+                            color: #2a7a9a;
+                            font-weight: 600;
+                            margin-bottom: 5px;
+                        }
+                        .company-tagline {
+                            color: #666;
+                            font-size: 0.95rem;
+                        }
+                        .letterhead-body {
+                            flex: 1;
+                            margin-top: 30px;
+                            font-size: 1.05rem;
+                            line-height: 1.8;
+                        }
+                        .field-container {
+                            margin-bottom: 15px;
+                        }
+                        .field-label {
+                            font-weight: 600;
+                            color: #444;
+                            margin-bottom: 5px;
+                        }
+                        .field-value {
+                            padding-left: 5px;
+                        }
+                        .letterhead-footer {
+                            margin-top: auto;
+                            padding-top: 20px;
+                            border-top: 1px solid #ddd;
+                            font-size: 0.9rem;
+                            color: #666;
+                        }
+                        .footer-row {
+                            display: flex;
+                            justify-content: space-between;
+                            flex-wrap: wrap;
+                            gap: 15px;
+                        }
+                        .hidden {
+                            display: none !important;
                         }
                     </style>
                 </head>
@@ -983,11 +997,13 @@ Sincerely,</textarea>
                     ${printableContent}
                     <script>
                         window.onload = function() {
+                            // Give it a moment to render
                             setTimeout(function() {
                                 window.print();
+                                // Close after printing
                                 setTimeout(function() {
                                     window.close();
-                                }, 500);
+                                }, 1000);
                             }, 500);
                         };
                     <\/script>
